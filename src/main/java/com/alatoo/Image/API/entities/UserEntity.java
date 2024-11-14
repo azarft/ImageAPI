@@ -1,10 +1,17 @@
 package com.alatoo.Image.API.entities;
 
+import com.alatoo.Image.API.enums.Role;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -14,7 +21,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class UserEntity {
+public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue
     private UUID id;
@@ -24,4 +31,22 @@ public class UserEntity {
 
     @Email
     private String email;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
+
+    Role role;
+
+    public UserEntity(UserEntity userEntity) {
+        this.id = userEntity.getId();
+        this.email = userEntity.getEmail();
+        this.password = userEntity.getPassword();
+        this.role = userEntity.getRole();
+        this.username = userEntity.getUsername();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
 }

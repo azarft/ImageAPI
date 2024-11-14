@@ -1,6 +1,9 @@
 package com.alatoo.Image.API.services;
 
 import com.alatoo.Image.API.dtos.UserDTO;
+import com.alatoo.Image.API.dtos.authorization.AuthRegistrationDTO;
+import com.alatoo.Image.API.entities.UserEntity;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,4 +17,9 @@ public interface UserService {
     UserDTO saveUser(UserDTO dto);
 
     void deleteUser(UUID id);
+
+    public ResponseEntity<UserDTO> signUp(AuthRegistrationDTO authRegistrationDTO);
+
+    public UserEntity getCurrentUser();
+
 }

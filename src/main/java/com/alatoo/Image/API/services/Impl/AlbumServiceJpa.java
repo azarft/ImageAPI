@@ -1,11 +1,12 @@
-package com.alatoo.Image.API.services;
+package com.alatoo.Image.API.services.Impl;
 
 import com.alatoo.Image.API.dtos.AlbumDTO;
 import com.alatoo.Image.API.entities.AlbumEntity;
-import com.alatoo.Image.API.entities.ImageEntity;
+import com.alatoo.Image.API.entities.UserEntity;
 import com.alatoo.Image.API.exceptions.NotFoundException;
 import com.alatoo.Image.API.mappers.AlbumMapper;
 import com.alatoo.Image.API.repositories.AlbumRepository;
+import com.alatoo.Image.API.services.AlbumService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class AlbumServiceJpa implements AlbumService{
+public class AlbumServiceJpa implements AlbumService {
     private final AlbumRepository albumRepository;
     private final AlbumMapper albumMapper;
 
@@ -52,5 +53,27 @@ public class AlbumServiceJpa implements AlbumService{
             throw new NotFoundException("Album not found with id: " + id);
         }
         albumRepository.deleteById(id);
+    }
+
+    @Override
+    public AlbumEntity getDefaultAlbum(UserEntity user) {
+        if (albumRepository.existsByUserAndName(user, "All images")) {
+            return albumRepository.getAlbumEntityByName("All images");
+        } else {
+            AlbumEntity album = AlbumEntity.builder()
+                    .user(user)
+                    .name("All images")
+                    .description("Default album to images")
+                    .build();
+            return albumRepository.save(album);
+        }
+    }
+
+    @Override
+    public List<AlbumDTO> findAlbumsByUserId(UUID id) {
+        List<AlbumEntity> albums = albumRepository.getAlbumEntitiesByUserId(id);
+        return albums.stream()
+                .map(albumMapper::albumEntityToAlbumDto)
+                .collect(Collectors.toList());
     }
 }

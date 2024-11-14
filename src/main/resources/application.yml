@@ -1,4 +1,7 @@
 spring:
+  servlet:
+    multipart:
+      enabled: true
   application:
     name: Image-API
   datasource:
@@ -8,9 +11,12 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update  # can be none, update, create, create-drop
+      ddl-auto: create-drop  # can be none, update, create, update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: true
+  web:
+    resources:
+      static-locations: file:uploads/

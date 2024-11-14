@@ -18,7 +18,7 @@ import java.util.UUID;
 public class ImageDTO {
     private UUID imageId;
 
-    private String url;
+    private String imageFile;
 
     private String name;
 

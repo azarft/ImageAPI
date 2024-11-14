@@ -15,4 +15,10 @@ public interface ImageService {
     ImageDTO saveImage(ImageDTO dto);
 
     void deleteImage(UUID id);
+
+    public List<ImageDTO> findImagesByUserId(UUID userId);
+
+    public List<ImageDTO> findImagesByUserIdAndByAlbumId(UUID userId, UUID albumId);
+
+    public List<ImageDTO> findImagesByAlbumId(UUID albumId);
 }

@@ -18,8 +18,8 @@ public class ImageEntity {
     @GeneratedValue
     private UUID imageId;
 
-    @Column(nullable = false)
-    private String url;
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String imageFile;
 
     private String name;
 

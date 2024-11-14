@@ -2,6 +2,8 @@ package com.alatoo.Image.API.services;
 
 import com.alatoo.Image.API.dtos.AlbumDTO;
 import com.alatoo.Image.API.dtos.UserDTO;
+import com.alatoo.Image.API.entities.AlbumEntity;
+import com.alatoo.Image.API.entities.UserEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,4 +17,8 @@ public interface AlbumService {
     AlbumDTO saveAlbum(AlbumDTO dto);
 
     void deleteAlbum(UUID id);
+
+    public AlbumEntity getDefaultAlbum(UserEntity user);
+
+    public List<AlbumDTO> findAlbumsByUserId(UUID id);
 }
