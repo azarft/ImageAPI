@@ -1,5 +1,10 @@
 # Image Management API
 
+- [Technical Task Documentation](https://docs.google.com/document/d/1Da7HKGfQrRWpLDCgy5T8DDdsh20wv5qOxHgwc94n4ig/edit?tab=t.0#heading=h.lgz645wnzwaz)
+- [GitHub Repository](https://github.com/azarft/ImageAPI)
+
+
+
 A RESTful API for managing images, built with **Spring Boot** and **PostgreSQL**. This API allows users to upload, manage, and delete images stored in Base64 format, and organize them into albums.
 
 ## Features
