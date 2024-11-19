@@ -27,15 +27,15 @@ public class UserController {
 
     private final String USER_PATH = "/users";
     private final String ID_PATH = "/{id}";
+    private final String ADMIN_PATH = "/admin";
 
-    @GetMapping(USER_PATH)
+    @GetMapping(ADMIN_PATH + USER_PATH)
     public List<UserDTO> getAllUsers() {
         return userService.findAllUsers();
     }
 
-    @GetMapping(USER_PATH + ID_PATH)
+    @GetMapping(ADMIN_PATH + USER_PATH + ID_PATH)
     public UserDTO getById(@PathVariable UUID id) {
-        log.info("Getting user with id: {}", id);
         return userService.findUserByID(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id));
     }
 

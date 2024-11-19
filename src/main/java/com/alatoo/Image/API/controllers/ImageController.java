@@ -43,7 +43,6 @@ public class ImageController {
 
     @PutMapping(IMAGE_PATH + ID_PATH)
     public ImageDTO updateImage(@PathVariable UUID id, @Validated @RequestBody ImageDTO imageDTO) {
-        log.info("Updating image with id: {}", id);
         imageService.findImageByID(id).orElseThrow(() -> new NotFoundException("Image not found with id: " + id));
         imageDTO.setImageId(id);
         return imageService.saveImage(imageDTO);
@@ -51,25 +50,21 @@ public class ImageController {
 
     @DeleteMapping(IMAGE_PATH + ID_PATH)
     public void deleteImage(@PathVariable UUID id) {
-        log.info("Deleting image with id: {}", id);
         imageService.deleteImage(id);
     }
 
     @GetMapping("/users/{userId}/images")
     public List<ImageDTO> getImagesByUserId(@PathVariable UUID userId) {
-        log.info("Fetching images for user with id: {}", userId);
         return imageService.findImagesByUserId(userId);
     }
 
     @GetMapping("/albums/{albumId}/images")
     public List<ImageDTO> getImagesByAlbumId(@PathVariable UUID albumId) {
-        log.info("Fetching images for album with id: {}", albumId);
         return imageService.findImagesByAlbumId(albumId);
     }
 
     @GetMapping("/users/{userId}/albums/{albumId}/images")
     public List<ImageDTO> getImagesByUserIdAndAlbumId(@PathVariable UUID userId, @PathVariable UUID albumId) {
-        log.info("Fetching images for user with id: {} and album with id: {}", userId, albumId);
         return imageService.findImagesByUserIdAndByAlbumId(userId, albumId);
     }
 }

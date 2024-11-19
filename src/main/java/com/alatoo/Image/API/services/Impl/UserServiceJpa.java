@@ -56,7 +56,7 @@ public class UserServiceJpa implements UserService {
     @Override
     public UserDTO saveUser(UserDTO dto) {
         UserEntity user = userMapper.userDtoToUserEntity(dto);
-        user.setRole(Role.USER);
+        user.setRole(Role.ROLE_USER);
         UserEntity savedUser = userRepository.save(user);
         return userMapper.userEntityToUserDto(savedUser);
     }
@@ -72,7 +72,7 @@ public class UserServiceJpa implements UserService {
     @Override
     public ResponseEntity<UserDTO> signUp(AuthRegistrationDTO authRegistrationDTO) {
         UserEntity user = userMapper.registrationDtoToUserEntity(authRegistrationDTO);
-        user.setRole(Role.USER);
+        user.setRole(Role.ROLE_USER);
         user.setPassword(passwordEncoder.encode(authRegistrationDTO.getPassword()));
 
         UserEntity savedUser = userRepository.save(user);

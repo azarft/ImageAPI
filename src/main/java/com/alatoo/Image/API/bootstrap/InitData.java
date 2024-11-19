@@ -30,7 +30,7 @@ public class InitData implements CommandLineRunner {
         UserEntity user = UserEntity.builder()
                 .email("argoazanov@gmail.com")
                 .username("azarft")
-                .role(Role.ADMIN)
+                .role(Role.ROLE_ADMIN)
                 .password(passwordEncoder.encode("password"))
                 .build();
         UserEntity savedUser = userRepository.save(user);

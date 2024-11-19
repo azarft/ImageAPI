@@ -29,8 +29,7 @@ public class SpringSecConfig {
                 .authorizeHttpRequests(
                         req -> req
                                 .requestMatchers(HttpMethod.POST, "/api/v1/auth/*").permitAll()
-//                                .requestMatchers(HttpMethod.GET, "/api/v1/*").permitAll()
-
+                                .requestMatchers("/admin").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers("/api/**").authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

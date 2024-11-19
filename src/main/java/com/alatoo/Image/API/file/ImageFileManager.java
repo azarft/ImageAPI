@@ -17,7 +17,7 @@ public class ImageFileManager {
         if (base64.contains(",")) {
             imageData = base64.split(",")[1];
         } else {
-            imageData = base64;  // Assume it's just the raw base64 string
+            imageData = base64;
         }
 
         // Decode the base64 data into a byte array

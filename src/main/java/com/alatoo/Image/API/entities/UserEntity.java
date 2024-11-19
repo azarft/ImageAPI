@@ -4,7 +4,6 @@ import com.alatoo.Image.API.enums.Role;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -35,7 +34,8 @@ public class UserEntity implements UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    Role role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     public UserEntity(UserEntity userEntity) {
         this.id = userEntity.getId();
