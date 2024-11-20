@@ -18,8 +18,8 @@ public interface UserService {
 
     void deleteUser(UUID id);
 
-    public ResponseEntity<UserDTO> signUp(AuthRegistrationDTO authRegistrationDTO);
+    ResponseEntity<UserDTO> signUp(AuthRegistrationDTO authRegistrationDTO);
 
-    public UserEntity getCurrentUser();
+    UserEntity getCurrentUser();
 
 }

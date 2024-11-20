@@ -36,13 +36,6 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        /*return Jwts
-                .parserBuilder()
-                .setSigningKey(getSignKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();*/
-
         return Jwts
                 .parser()
                 .verifyWith(getSignKey())
@@ -60,35 +53,22 @@ public class JwtService {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-
-
     public String GenerateToken(String username){
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, username);
     }
 
     private String createToken(Map<String, Object> claims, String username) {
-
-        /*return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(username)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*1))
-                .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();*/
-
         return Jwts.builder()
                 .claims(claims)
                 .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 2))
                 .signWith(getSignKey()).compact();
-
     }
 
     private SecretKey getSignKey() {
-
         byte[] keyBytes = Decoders.BASE64.decode(SECRET);
-
         try {
             return Keys.hmacShaKeyFor(keyBytes);
         } catch (WeakKeyException e) {

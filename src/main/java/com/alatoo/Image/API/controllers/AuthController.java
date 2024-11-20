@@ -12,7 +12,6 @@ import com.alatoo.Image.API.services.JwtService;
 import com.alatoo.Image.API.services.RefreshTokenService;
 import com.alatoo.Image.API.services.UserService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
-@Slf4j
+
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -63,7 +62,7 @@ public class AuthController {
                     return JwtTokenDto.builder()
                             .accessToken(accessToken)
                             .token(refreshTokenRequestDTO.getToken()).build();
-                }).orElseThrow(() ->new RuntimeException("Refresh Token is not in DB..!!"));
+                }).orElseThrow(() ->new RuntimeException("Refresh Token is not in Database!!"));
     }
 
     @GetMapping

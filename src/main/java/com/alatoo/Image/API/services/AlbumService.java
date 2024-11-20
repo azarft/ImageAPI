@@ -18,7 +18,7 @@ public interface AlbumService {
 
     void deleteAlbum(UUID id);
 
-    public AlbumEntity getDefaultAlbum(UserEntity user);
+    AlbumEntity getDefaultAlbum(UserEntity user);
 
-    public List<AlbumDTO> findAlbumsByUserId(UUID id);
+    List<AlbumDTO> findAlbumsByUserId(UUID id);
 }

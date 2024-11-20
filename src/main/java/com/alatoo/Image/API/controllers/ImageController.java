@@ -4,7 +4,6 @@ import com.alatoo.Image.API.dtos.ImageDTO;
 import com.alatoo.Image.API.exceptions.NotFoundException;
 import com.alatoo.Image.API.services.ImageService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +14,6 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
-@Log4j2
 public class ImageController {
     private final ImageService imageService;
 
@@ -25,19 +23,16 @@ public class ImageController {
     @GetMapping(IMAGE_PATH)
     @PreAuthorize("hasRole('ADMIN')")
     public List<ImageDTO> getAllImages() {
-        log.info("Fetching all images");
         return imageService.findAllImages();
     }
 
     @GetMapping(IMAGE_PATH + ID_PATH)
     public ImageDTO getImageById(@PathVariable UUID id) {
-        log.info("Fetching image with id: {}", id);
         return imageService.findImageByID(id).orElseThrow(() -> new NotFoundException("Image not found with id: " + id));
     }
 
     @PostMapping(IMAGE_PATH)
     public ImageDTO createImage(@RequestBody ImageDTO imageDTO) {
-        log.info("Creating a new image with details: {}", imageDTO);
         return imageService.saveImage(imageDTO);
     }
 

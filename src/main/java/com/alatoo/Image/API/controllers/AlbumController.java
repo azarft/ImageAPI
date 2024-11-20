@@ -4,7 +4,6 @@ import com.alatoo.Image.API.dtos.AlbumDTO;
 import com.alatoo.Image.API.exceptions.NotFoundException;
 import com.alatoo.Image.API.services.AlbumService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +13,6 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
-@Log4j2
 public class AlbumController {
     private final AlbumService albumService;
 

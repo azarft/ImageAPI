@@ -4,9 +4,6 @@ import com.alatoo.Image.API.dtos.UserDTO;
 import com.alatoo.Image.API.exceptions.NotFoundException;
 import com.alatoo.Image.API.services.UserService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.context.annotation.Role;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +18,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
-@Log4j2
+
 public class UserController {
     private final UserService userService;
 
@@ -40,12 +37,12 @@ public class UserController {
     }
 
     @PostMapping(USER_PATH)
-    public UserDTO createUser(@Validated @RequestBody UserDTO userDTO) {
+    public UserDTO createUser(@RequestBody UserDTO userDTO) {
         return userService.saveUser(userDTO);
     }
 
     @PutMapping(ID_PATH)
-    public UserDTO updateUser(@PathVariable UUID id, @Validated @RequestBody UserDTO userDTO) {
+    public UserDTO updateUser(@PathVariable UUID id, @RequestBody UserDTO userDTO) {
         userService.findUserByID(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id));
         userDTO.setId(id);
         return userService.saveUser(userDTO);
