@@ -7,6 +7,7 @@ import com.alatoo.Image.API.exceptions.NotFoundException;
 import com.alatoo.Image.API.mappers.AlbumMapper;
 import com.alatoo.Image.API.repositories.AlbumRepository;
 import com.alatoo.Image.API.services.AlbumService;
+import com.alatoo.Image.API.services.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,16 +19,19 @@ import java.util.stream.Collectors;
 public class AlbumServiceJpa implements AlbumService {
     private final AlbumRepository albumRepository;
     private final AlbumMapper albumMapper;
+    private final UserService userService;
 
-    public AlbumServiceJpa(AlbumRepository albumRepository, AlbumMapper albumMapper) {
+    public AlbumServiceJpa(AlbumRepository albumRepository, AlbumMapper albumMapper, UserService userService) {
         this.albumRepository = albumRepository;
         this.albumMapper = albumMapper;
+        this.userService = userService;
     }
 
 
     @Override
     public List<AlbumDTO> findAllAlbums() {
-        List<AlbumEntity> albums = (List<AlbumEntity>) albumRepository.findAll();
+        UserEntity user = userService.getCurrentUser();
+        List<AlbumEntity> albums = albumRepository.getAlbumEntitiesByUserId(user.getId());
         return albums.stream()
                 .map(albumMapper::albumEntityToAlbumDto)
                 .collect(Collectors.toList());
@@ -35,21 +39,25 @@ public class AlbumServiceJpa implements AlbumService {
 
     @Override
     public Optional<AlbumDTO> findAlbumByID(UUID id) {
-        Optional<AlbumEntity> optionalAlbum = albumRepository.findById(id);
+        UserEntity user = userService.getCurrentUser();
+        Optional<AlbumEntity> optionalAlbum = albumRepository.findByAlbumIdAndUserId(id, user.getId());
         AlbumEntity albumEntity = optionalAlbum.orElseThrow(() -> new NotFoundException("Album not found with id: " + id));
         return Optional.of(albumMapper.albumEntityToAlbumDto(albumEntity));
     }
 
     @Override
     public AlbumDTO saveAlbum(AlbumDTO dto) {
+        UserEntity user = userService.getCurrentUser();
         AlbumEntity albumEntity = albumMapper.albumDtoToAlbumEntity(dto);
+        albumEntity.setUser(user);
         AlbumEntity savedAlbum = albumRepository.save(albumEntity);
         return albumMapper.albumEntityToAlbumDto(savedAlbum);
     }
 
     @Override
     public void deleteAlbum(UUID id) {
-        if (!albumRepository.existsById(id)) {
+        UserEntity user = userService.getCurrentUser();
+        if (!albumRepository.existsByAlbumIdAndUserId(id, user.getId())) {
             throw new NotFoundException("Album not found with id: " + id);
         }
         albumRepository.deleteById(id);

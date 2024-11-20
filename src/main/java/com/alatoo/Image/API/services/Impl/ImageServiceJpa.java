@@ -11,6 +11,7 @@ import com.alatoo.Image.API.repositories.ImageRepository;
 import com.alatoo.Image.API.services.AlbumService;
 import com.alatoo.Image.API.services.ImageService;
 import com.alatoo.Image.API.services.UserService;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -38,7 +39,8 @@ public class ImageServiceJpa implements ImageService {
 
     @Override
     public List<ImageDTO> findAllImages() {
-        List<ImageEntity> images = (List<ImageEntity>) imageRepository.findAll();
+        UserEntity user = userService.getCurrentUser();
+        List<ImageEntity> images = imageRepository.getImageEntitiesByUserId(user.getId());
         return images.stream()
                 .map(imageMapper::imageEntityToImageDto)
                 .collect(Collectors.toList());
@@ -46,7 +48,8 @@ public class ImageServiceJpa implements ImageService {
 
     @Override
     public Optional<ImageDTO> findImageByID(UUID id) {
-        Optional<ImageEntity> optionalImageEntity = imageRepository.findById(id);
+        UserEntity user = userService.getCurrentUser();
+        Optional<ImageEntity> optionalImageEntity = imageRepository.findByImageIdAndUserId(id, user.getId());
         ImageEntity image = optionalImageEntity.orElseThrow(() -> new NotFoundException("Image not found with id: " + id));
         return Optional.ofNullable(imageMapper.imageEntityToImageDto(image));
     }
@@ -75,7 +78,8 @@ public class ImageServiceJpa implements ImageService {
 
     @Override
     public void deleteImage(UUID id) {
-        if (!imageRepository.existsById(id)) {
+        UserEntity user = userService.getCurrentUser();
+        if (!imageRepository.existsByImageIdAndUserId(id, user.getId())) {
             throw new NotFoundException("Image not found with id: " + id);
         }
         imageRepository.deleteById(id);

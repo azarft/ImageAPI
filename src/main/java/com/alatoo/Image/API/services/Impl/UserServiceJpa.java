@@ -5,7 +5,6 @@ import com.alatoo.Image.API.dtos.authorization.AuthRegistrationDTO;
 import com.alatoo.Image.API.entities.UserEntity;
 import com.alatoo.Image.API.enums.Role;
 import com.alatoo.Image.API.mappers.UserMapper;
-import com.alatoo.Image.API.repositories.AlbumRepository;
 import com.alatoo.Image.API.repositories.UserRepository;
 import com.alatoo.Image.API.exceptions.NotFoundException;
 import com.alatoo.Image.API.services.AlbumService;
@@ -27,15 +26,12 @@ public class UserServiceJpa implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-    private final AlbumRepository albumRepository;
-    private final AlbumService albumService;
+//    private final AlbumService albumService;
 
-    public UserServiceJpa(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder, AlbumRepository albumRepository, AlbumService albumService) {
+    public UserServiceJpa(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
-        this.albumRepository = albumRepository;
-        this.albumService = albumService;
     }
 
     @Override
@@ -76,7 +72,6 @@ public class UserServiceJpa implements UserService {
         user.setPassword(passwordEncoder.encode(authRegistrationDTO.getPassword()));
 
         UserEntity savedUser = userRepository.save(user);
-        albumService.getDefaultAlbum(savedUser);
 
         UserDTO dto = userMapper.userEntityToUserDto(savedUser);
         return ResponseEntity.ok(dto);
